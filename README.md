@@ -20,11 +20,8 @@ At 25degC the NTC is 10kohm and the resistor in the voltage divider is 10kohm 1%
 Connection is:
 
 `3V ----/\/\/\/----/\/\/\/---- GND`
-
           10k    |   NTC    
-          
                  |                
-                 
                input
               
 Every 15 minutes it logs the temperature and time to arrays.
