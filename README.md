@@ -19,7 +19,7 @@ Temperature is calculated by working out the reistance value for the NTC and loo
 At 25degC the NTC is 10kohm and the resistor in the voltage divider is 10kohm 1%. 
 Connection is:
 
-`3V ----/\/\/\/----/\/\/\/---- GND`
+`3V ----/\/\/\/----/\/\/\/---- GND`<br>
           10k    |   NTC<br>    
                  |    <br>            
                input <br>
