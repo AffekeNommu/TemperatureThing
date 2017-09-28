@@ -21,4 +21,6 @@ It then resets the readings and starts logging again.
 
 There is a limitation in the amount of data you can put in the email but the data type used for the message body will happily hold 100 readings.
 
+Readings in temp allow for -10 to 125degC. 
+
 First full system project in Arduino and also first sharing on github.
