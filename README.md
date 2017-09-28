@@ -4,9 +4,13 @@ Using a LoLin NodeMCU ESP8266 module and a 10k NTC thermistor to display tempera
 
 Info links for libraries etc:
 Setting up ESP8266 with Arduino info is here: http://arduino-esp8266.readthedocs.io/en/latest/installing.html
+
 The AJAX website design is here: http://www.esp8266.com/viewtopic.php?f=8&t=4307
+
 The mail library is here: https://github.com/gpepe/esp8266-sendemail
+
 NTP time library is here: https://github.com/PaulStoffregen/Time
+
 Voltage divider formula: https://en.wikipedia.org/wiki/Voltage_divider
 
 The code is commented but a brief description is that it starts and sets up an AJAX website to display temperatures and time stamps. It displays current minimum and maximum.
