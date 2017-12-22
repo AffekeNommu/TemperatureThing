@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
-$username = "logging user name";
-$password = "logging user password";
+$username = "temperature log user";
+$password = "temperature log password";
 $dbname = "Temperature";
 $data=array();
 // Create connection
