@@ -37,4 +37,12 @@ Readings in temp allow for -10 to 125degC.
 
 My installation's readings are available at http://imgood.ruok.org if you would like to see.
 
+The website files are:
+index.php which is the start page. It displays today's readings from midnight in 15 minute intervals.
+month.html which is the form for selecting the month you want to review.
+month.php is called by the form action and displays the min and max each day for the selected month.
+inserto.php is the page the arduino uses to load the MySQL with readings.
+
+Assumption is that you have the MySQL installation on your webserver.
+
 First full system project in Arduino and also first sharing on github.
