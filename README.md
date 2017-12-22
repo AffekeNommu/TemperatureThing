@@ -1,6 +1,6 @@
 # TemperatureThing
 ESP8266 and NTC temperature website and logging
-Using a LoLin NodeMCU ESP8266 module and a 10k NTC thermistor to display temperature readings in a website and email a summary at the end of the day.
+Using a LoLin NodeMCU ESP8266 module and a 10k NTC thermistor to display temperature readings in a website and log readings every 15 minutes to a MySQL database in the cloud with a PHP website to display.
 
 Info links for libraries etc:
 Setting up ESP8266 with Arduino info is here: http://arduino-esp8266.readthedocs.io/en/latest/installing.html
@@ -29,12 +29,12 @@ NTC<br>
    !<br>
 GND
               
-Every 15 minutes it logs the temperature and time to arrays.
-Just before midnight it emails out the days readings as a CSV in the text of the email.
-It then resets the readings and starts logging again.
-
-There is a limitation in the amount of data you can put in the email but the data type used for the message body will happily hold 100 readings.
+Every 15 minutes it logs the temperature and time to a MySQL dtabase.
+Just before midnight it emails out the days instantaneous readings.
+It then reboots as a housekeeping event and starts logging again.
 
 Readings in temp allow for -10 to 125degC. 
+
+My installation's readings are available at http://imgood.ruok.org if you would like to see.
 
 First full system project in Arduino and also first sharing on github.
