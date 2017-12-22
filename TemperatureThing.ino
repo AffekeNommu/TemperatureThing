@@ -1,3 +1,4 @@
+#include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <TimeLib.h>
@@ -5,23 +6,21 @@
 #include <sendemail.h>
 
 //global variables
-static const char ntpServerName[] = "us.pool.ntp.org";  
-const int timeZone = 10;  
-ESP8266WebServer server(80);  
-const char* ssid = "my SSID";  
-const char* password = "my password";  
-String webSite, javaScript, XML;  
-WiFiUDP Udp;  
-unsigned int localPort = 8888;  
-time_t timelast = 0;  
-time_t timetest, timenow, timemax, timemin;  
-int templast, tempnow, tempmax, tempmin;  
-time_t times[100];//96 is one reading every 15 minutes  
-int temps[100];  
-int arridx = 0;
+static const char ntpServerName[] = "us.pool.ntp.org";
+const int timeZone = 11;
+ESP8266WebServer server(80);
+const char* ssid = "SSID where sensor used";
+const char* password = "password for SSID";
+String webSite, javaScript, XML;
+WiFiUDP Udp;
+unsigned int localPort = 8888;
+time_t timelast = 0;
+time_t timetest, timenow, timemax, timemin;
+int templast, tempnow, tempmax, tempmin;
+bool start = false;
 
 //build the html component of the site
-void buildWebsite() {  
+void buildWebsite() {
   buildJavascript();
   webSite = "<!DOCTYPE HTML>\n";
   webSite += javaScript;
@@ -67,10 +66,10 @@ void buildWebsite() {
 }
 
 //build the javascript component of the website
-void buildJavascript() {  
+void buildJavascript() {
   javaScript = "<SCRIPT>\n";
   javaScript += "var xmlHttp=createXmlHttpObject();\n";
-
+  
   javaScript += "function createXmlHttpObject(){\n";
   javaScript += " if(window.XMLHttpRequest){\n";
   javaScript += "    xmlHttp=new XMLHttpRequest();\n";
@@ -123,7 +122,7 @@ void buildJavascript() {
 }
 
 //build the xml component of the website
-void buildXML() {  
+void buildXML() {
   XML = "<?xml version='1.0'?>";
   XML += "<Stats>";
   XML += "<tempnow>";
@@ -148,19 +147,19 @@ void buildXML() {
 }
 
 //website handler
-void handleWebsite() {  
+void handleWebsite() {
   buildWebsite();
   server.send(200, "text/html", webSite);
 }
 
 //xml handler
-void handleXML() {  
+void handleXML() {
   buildXML();
   server.send(200, "text/xml", XML);
 }
 
 //Match the index temp in an array of resistance values - these were supplied by the NTC thermistor manufacturer and the average column was used
-int gettemp(float res) {  
+int gettemp(float res) {
   float temp[] = {
     51.82,//-10
     49.28,
@@ -313,7 +312,7 @@ int gettemp(float res) {
 }
 
 //Read the analog port 20 times and average it and get the ADC value
-int getraw () {  
+int getraw () {
   int sum = 0;
   int i;
   for (i = 0; i < 20; i++) {
@@ -331,17 +330,17 @@ int getraw () {
 //          (vi/vo-1)
 //
 // vi is 1024, R1=10k, vo is read from ADC
-float getresist(int raw) {  
+float getresist(int raw) {
   float r2;
   r2 = (float)(10 * (1 / ((1024 / (float)raw) - 1)));
   return r2;
 }
 
 //NTP code to get time
-const int NTP_PACKET_SIZE = 48; // NTP time is in the first 48 bytes of message  
+const int NTP_PACKET_SIZE = 48; // NTP time is in the first 48 bytes of message
 byte packetBuffer[NTP_PACKET_SIZE]; //buffer to hold incoming & outgoing packets
 
-time_t getNtpTime()  
+time_t getNtpTime()
 {
   IPAddress ntpServerIP; // NTP server's ip address
 
@@ -373,7 +372,7 @@ time_t getNtpTime()
 }
 
 // send an NTP request to the time server at the given address
-void sendNTPpacket(IPAddress &address)  
+void sendNTPpacket(IPAddress &address)
 {
   // set all bytes in the buffer to 0
   memset(packetBuffer, 0, NTP_PACKET_SIZE);
@@ -396,7 +395,7 @@ void sendNTPpacket(IPAddress &address)
 }
 
 //show the time value as a readable format
-String formattime(time_t in)  
+String formattime(time_t in)
 {
   String timestamp = "";
   // nice formatted display of the time
@@ -411,7 +410,7 @@ String formattime(time_t in)
     timestamp += "0";
   }
   timestamp += day(in);
-  timestamp += " ";
+  timestamp += "T";
   if (hour(in) <= 9) {
     timestamp += "0";
   }
@@ -430,8 +429,8 @@ String formattime(time_t in)
   return timestamp;
 }
 
-//send an email with minimum and maximum values followed by csv 10 minute readings for the day
-void sendmail() {  
+//send an email with minimum and maximum values for the day
+void sendmail() {
   String sub = "";
   String msg = "";
   int i;
@@ -443,20 +442,20 @@ void sendmail() {
   msg += "\nMaximum temp ";
   msg += tempmax;
   msg += " degC at ";
-  msg += formattime(timemin);
-  msg += "\n\n";
+  msg += formattime(timemax);
+  msg += "\n\n";/* Removed array write to email as all data in MySQL
   for (i = 0; i < arridx; i++) {
     msg += temps[i];
     msg += ",";
     msg += formattime(times[i]);
     msg += "\n";
-  }//watch out as the mail library has a message character limit
-  SendEmail e("my.mail.server", 25, "", "", 5000, false);
-  e.send("me@my.mail.server", "recipient@mail.com", sub, msg);
+  }*///watch out as the mail library has a message character limit
+  SendEmail e("mailserver.name", 25, "", "", 5000, false);
+  e.send("sender@mailserver.name", "recipient@your.mail.provider", sub, msg);
 }
 
 //Initialise all the junk
-void setup() {  
+void setup() {
   Serial.begin(115200);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED)delay(500);
@@ -488,7 +487,7 @@ void setup() {
 }
 
 //main program loop
-void loop() {  
+void loop() {
   server.handleClient();
   if (timeStatus() != timeNotSet) {
     //update the display only if time has changed
@@ -498,6 +497,12 @@ void loop() {
     }
   }
 
+  //Wait for the start of the hour to begin logging
+  if (minute(timenow) == 0 and second(timenow) == 0) {
+    start = true;
+    Serial.println("Logging started on the hour");
+  }
+  
   //if we get a new max we record it
   tempnow = gettemp(getresist(getraw()));
   if (tempnow > tempmax) {
@@ -511,25 +516,31 @@ void loop() {
     tempmin = tempnow;
   }
 
-  //Reset the min and max for midnight and email readings for the day
-  if (formattime(timenow).substring(11) == "23:59:59") {
-    sendmail();//email the temps for the day
-    tempmin = tempnow;
-    tempmax = tempnow;
-    timemin = timenow;
-    timemax = timenow;
-    timetest = timenow;
-    arridx = 0;
-  }
-
   //save the temp to the array every 15 minutes
-  if (timenow >= timetest) {
-    temps[arridx] = tempnow;
-    times[arridx] = timenow;
-    arridx++;
-    if (arridx == 100) { //in case you shorten reading length and need to reset
-      arridx = 0;
+  if ((timenow >= timetest) and start) {
+    //Write to MySQL instance in cloud
+    String poststring = "http://your.web.server/inserto/inserto.php?Source=SensorID&Temperature=";
+    poststring += tempnow;
+    poststring += "&TimeStamp=";
+    poststring += formattime(timenow);
+    HTTPClient http;
+    http.begin(poststring);
+    int httpCode = http.GET();
+    if (httpCode > 0) { //Check the returning code
+      String payload = http.getString();   //Get the request response payload
+      Serial.println(payload);                     //Print the response payload
     }
+    http.end();
     timetest = timenow + 900; //15 minutes is 900 seconds
+  }
+  //Reset the min and max for midnight and email readings for the day
+  if (formattime(timenow).substring(11) == "23:45:00") {
+    sendmail();//email the temps for the day
+    //tempmin = tempnow;
+    //tempmax = tempnow;
+    //timemin = timenow;
+    //timemax = timenow;
+    delay(1000);
+    ESP.restart();//reboot the unit as a housekeeping task it will restart logging on the hour
   }
 }
