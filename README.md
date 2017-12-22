@@ -13,7 +13,7 @@ NTP time library is here: https://github.com/PaulStoffregen/Time
 
 Voltage divider formula: https://en.wikipedia.org/wiki/Voltage_divider
 
-The code is commented but a brief description is that it starts and sets up an AJAX website to display temperatures and time stamps. It displays current minimum and maximum temperatures with their respective times.
+The arduino code is commented but a brief description is that it starts and sets up an AJAX website to display temperatures and time stamps. It displays current minimum and maximum temperatures with their respective times.
 
 Temperature is calculated by working out the reistance value for the NTC and looking up in a table to get the temperature in centigrade. The NTC I bought had a table to 4 decimal places for average resistance so I rounded it to 2 and used that.
 At 25degC the NTC is 10kohm and the resistor in the voltage divider is 10kohm 1%. 
@@ -29,7 +29,7 @@ NTC<br>
    !<br>
 GND
               
-Every 15 minutes it logs the temperature and time to a MySQL dtabase.
+Every 15 minutes it logs the temperature and time to a MySQL database.
 Just before midnight it emails out the days instantaneous readings.
 It then reboots as a housekeeping event and starts logging again.
 
