@@ -1,8 +1,5 @@
 <?php
-echo '<html>
-<head></head>
-<body>
-<a href="index.php">Day</a>
+echo '<a href="index.php">Day</a>
 <form action="monthdisp.php">
 <p>
 Which Month?
@@ -63,7 +60,5 @@ Which Year?
 </select>
 </p>
 <input type="submit">
-</form>
-</body>
-</html>';
+</form>';
 ?>
