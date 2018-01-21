@@ -2,6 +2,8 @@
 ESP8266 and NTC temperature website and logging
 Using a LoLin NodeMCU ESP8266 module and a 10k NTC thermistor to display temperature readings in a website and log readings every 15 minutes to a MySQL database in the cloud with a PHP website to display.
 
+The ESP8266 uses AJAX style javascript to take advantage of client side processing and the main report website uses php to reduce overhead on any mobile client user. I feel this is the right way round to do things as I dislike client side scripting on mobile browsers.
+
 Info links for libraries etc:
 Setting up ESP8266 with Arduino info is here: http://arduino-esp8266.readthedocs.io/en/latest/installing.html
 
