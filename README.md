@@ -45,4 +45,10 @@ inserto.php is the page the arduino uses to load the MySQL with readings.
 
 Assumption is that you have the MySQL installation on your webserver. Daylight savings requires arduino to be updated as well as index.php.
 
+Database structure is:
+Source, varchar(25)
+Temperature, int(11)
+TimeStamp, datetime
+No primary key is set as Source can be used for another input ESP8266 sensor which may be using same time intervals.
+
 First full system project in Arduino and also first sharing on github.
