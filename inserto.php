@@ -1,9 +1,3 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Inserto</title>
-  </head>
-  <body>
 <?php
 $servername = "localhost";
 $username = "temperature log user";
@@ -30,5 +24,3 @@ if ($conn->query($sql) === TRUE) {
 
 $conn->close();
 ?>
-  </body>
-</html>
