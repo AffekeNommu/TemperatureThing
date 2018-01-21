@@ -16,9 +16,7 @@ $sql = "SELECT date_format(TimeStamp,'%Y/%m/%d') daystr, MIN(Temperature) mintmp
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     // output data of each row
-    echo '<html>
-    <head></head>
-    <body><a href="./month.php">Month</a>
+    echo '<a href="./month.php">Month</a>
     <table border=1>
     <tr><th>Day</th><th>Min</th><th>Max</th></tr>';
     while($row = $result->fetch_assoc()) {
@@ -30,9 +28,7 @@ if ($result->num_rows > 0) {
     echo $row["maxtmp"];
     echo "</td></tr>";
     }
-    echo "</table>
-    </body>
-    </html>";
+    echo "</table>";
 } else {
     echo "0 results";
 }?>
