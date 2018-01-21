@@ -18,7 +18,7 @@ if ($result->num_rows > 0) {
     echo '<html>
     <head></head>
     <body>
-    <a href="month.html">Month</a><table border=1><tr><th>Time</th><th>Temperature</th></tr>';
+    <a href="month.php">Month</a><table border=1><tr><th>Time</th><th>Temperature</th></tr>';
     while($row = $result->fetch_assoc()) {
     echo "<tr align=center><td>";
     echo $row['TimeStamp'];
