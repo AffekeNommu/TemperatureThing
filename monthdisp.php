@@ -1,13 +1,13 @@
 <?php
 $servername = "localhost";
-$username = "templog";
-$password = "templog";
+$username = "temperature log user";
+$password = "temperature log password";
 $dbname = "Temperature";
 $year=$_GET['year'];
 $month=$_GET['month'];
 $data=array();
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname, 0, '/media/zds/klvn8r/private/mysql/socket');
+$conn = new mysqli($servername, $username, $password, $dbname, 0, '/path/to/your/database/mysql/socket');
 // Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
