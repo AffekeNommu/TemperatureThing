@@ -37,8 +37,6 @@ It then reboots as a housekeeping event and starts logging again.
 
 Readings in temp allow for -10 to 125degC. 
 
-My installation's readings are available at http://imgood.ruok.org if you would like to see.
-
 The website files are:
 index.php which is the start page. It displays today's readings from midnight in 15 minute intervals.
 month.html which is the form for selecting the month you want to review.
